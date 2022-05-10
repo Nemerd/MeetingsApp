@@ -1,0 +1,132 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: auto;
+    display: grid;
+    grid-template-areas: 
+    "barra barra barra"
+    "contenido contenido lista"
+    "controles controles lista";
+    grid-template-columns: 2fr 2fr 1fr;
+    grid-template-rows: 10vh 75vh 15vh;
+}
+
+.barra {
+    grid-area: barra;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: #3AA296;
+}
+
+.contenido{
+    grid-area: contenido;
+    display: flex;
+    flex-direction: row;
+    background-color: #3A93A7;
+}
+
+.videoDeParticipantes{
+    align-self: center;
+}
+
+.contenedorVideo{
+    border: 3px solid;
+    border-radius: 5px;
+    width: 250px;
+    height: 150px;
+    display:flex;
+    align-content: center;
+    justify-content: center;
+    margin: 20px 20px;
+}
+
+.lista{
+    grid-area: lista;
+    background-color: #3A75AC;
+}
+
+.participantes{
+    list-style-type: none;
+    padding: 0px 10px;
+    margin: 0%;
+}
+
+.controles{
+    grid-area: controles;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: #3AA296;
+}
+
+.ctrlIzq{
+    display: flex;
+    flex-direction: row;
+}
+
+/* .ctrlCen {
+
+} */
+
+/* .ctrlDer {
+
+} */
+
+button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.colorido {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation-duration: 5s;
+    animation-timing-function: ease;
+    animation-iteration-count: infinite;
+    animation-name: changeColors;
+}
+.esqIzq {
+    display: flex;
+    margin-left: 15px;
+    align-items: center;
+}
+.esqDer {
+    display: flex;
+    margin-right: 15px;
+    align-items: center;
+}
+
+.icon {
+    display: none;
+}
+
+.visible {
+    display: block;
+}
+
+.siempreVisible {
+    display: flex;
+}
+
+/* @keyframes changeColors {
+
+    0%{
+        color: red;
+    }
+    
+    30%{
+        color: blue;
+    }
+
+    60%{
+        color: green;
+    }
+
+    100%{
+        color: red;
+    }
+} */
