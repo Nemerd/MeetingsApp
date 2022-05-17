@@ -89,15 +89,7 @@ function listar_participantes() {
 
 // TO-DO
 function eliminar_participantes() {
-    for (let i of participantes) {
-        console.log(`${participantes.indexOf(i)}: ${i}`);
-    }
-    let eliminar_a = prompt(`¿A quién deseas eliminar? (Introduce su número de participante)`);
-    alert(`Adiós ${participantes[eliminar_a]}.`);
-    participantes.splice(eliminar_a, 1);
-    if (participantes.length === 0) {
-        go_on = false;
-    }
+    
 }
 
 // Cámara
