@@ -1,22 +1,31 @@
 /* Meetings app */
 
-/* Funciones que debería tener:
-* [Listo] Agregar participante
-* [Listo] Prender/Apagar cámara
-* [Listo] Prender/Apagar micrófono
-* [Listo] Subir/Bajar volumen
-* [Listo] Agregar participantes
-* [Listo] Listar participantes
-*       |-> [] Ordenar la lista.
-* [Listo] 00: Eliminar participante
-*       |-> [Listo] Mostrar index de participante para poder eliminarlo
-* [] Compartir imágenes
-* [Listo] Mostrar la hora
-* 
-*/
+// Funciones que debería tener:
+// [Rehecho][Listo] Agregar participante
+// [Rehecho][Listo] Prender/Apagar cámara
+// [Rehecho][Listo] Prender/Apagar micrófono
+// [][Listo] Subir/Bajar volumen
+// [Rehecho][Listo] Agregar participantes
+// [Rehecho][Listo] Listar participantes
+//       |-> [Listo] Ordenar la lista.
+//       |-> [] Busqueda de participantes
+/* ahi podrias agregar una opcion que diga buscar participante, 
+luego un prompt que pregunte alguna palabra para buscar, luego 
+podrias realizar un filtro de tu arreglo y listar a los 
+participantes que cumplen con esa condicion */
+// [][Listo] 00: Eliminar participante
+//       |-> [Listo] Mostrar index de participante para poder eliminarlo
+// [] Compartir imágenes
+// [Listo] Mostrar la hora
+// [] Mostrar imagen de participante cuando la cámara esté encendida
+
+
 
 let cal = new Date();
+
 let participantes = [];
+const part = document.getElementById("participantes");
+window.setInterval(listar_participantes, 1000);
 
 const camara = {
     status: false,
@@ -24,7 +33,6 @@ const camara = {
     camOff: document.getElementById('camOff'),
     cam: document.getElementById('cam'),
 }
-camara.cam.addEventListener("click", toggle_camara);
 
 let microfono = {
     status: false,
@@ -32,12 +40,19 @@ let microfono = {
     micOff: document.getElementById('micOff'),
     mic: document.getElementById('mic')
 }
-microfono.mic.addEventListener("click", toggle_microfono);
+
+const addPart = document.getElementById("addPart");
+
 
 let volumen = 50;
 const opcionesPosibles = ["0", "00", "1", "2", "3", "+", "-", "salir"];
 
 const hora = document.getElementById("hora");
+
+// Event listeners
+addPart.addEventListener("click", agregar_participante);
+camara.cam.addEventListener("click", toggle_camara);
+microfono.mic.addEventListener("click", toggle_microfono);
 
 function actualizarHora() {
     hora.textContent = `${cal.getHours()}:${cal.getMinutes()}`;
@@ -48,11 +63,13 @@ function agregar_participante() {
     let nombre = prompt("Hola, ¿Cuál es tu nombre?");
     participantes.push(nombre);
     console.log(`Bienvenido/a a la reunión ${nombre}.`);
+    sessionStorage.setItem('participantes', JSON.stringify(participantes));
 }
 
 function listar_participantes() {
-    let part = document.getElementById('participantes');
+    participantes = JSON.parse(sessionStorage.getItem('participantes'));
     participantes.sort();
+
 
     while (part.firstChild) {
         part.removeChild(part.firstChild);
@@ -70,6 +87,7 @@ function listar_participantes() {
     }
 }
 
+// TO-DO
 function eliminar_participantes() {
     for (let i of participantes) {
         console.log(`${participantes.indexOf(i)}: ${i}`);
@@ -120,9 +138,9 @@ function bajar_volumen() {
 }
 
 // Ejecución
-agregar_participante();
-let salir = false;
+// agregar_participante();
 
+let salir = false;
 /* while (!salir) {
     let opcion1;
     let opcion2;
