@@ -52,7 +52,6 @@ const delPart = document.getElementById("delPart");
 
 
 let volumen = 50;
-// const opcionesPosibles = ["0", "00", "1", "2", "3", "+", "-", "salir"];
 
 const hora = document.getElementById("hora");
 
@@ -94,30 +93,23 @@ function agregar_participante() {
 
 function listar_participantes() {
 
-    participantes = JSON.parse(sessionStorage.getItem('participantes'));
-    if (participantes.length === 0) {
-        return;
-    }
-    // participantes.sort();
+    !sessionStorage.getItem('participantes') ?
+        sessionStorage.setItem('participantes', JSON.stringify(participantes)) :
+        participantes = JSON.parse(sessionStorage.getItem('participantes'));
 
 
     while (part.firstChild) {
         part.removeChild(part.firstChild);
     }
 
+
     for (let i of participantes) {
         let name = document.createElement('li');
         name.textContent = `${i.nombre} (${i.id})`;
         part.appendChild(name);
-        // console.log(i);
     }
-    /*     console.log("En la reunión están:");
-        for (let i of participantes) {
-            console.log(i);
-        } */
 }
 
-// TO-DO
 function eliminar_participante() {
     let eliminar = prompt("Ingresa el ID de quien quieres eliminar")
     for (let i = 0; participantes.length > i; i += 1) {
@@ -166,78 +158,3 @@ function bajar_volumen() {
     console.log(`El volumen está al ${volumen}`);
     alert(`El volumen está al ${volumen}`);
 }
-
-// Ejecución
-// agregar_participante();
-
-let salir = false;
-/* while (!salir) {
-    let opcion1;
-    let opcion2;
-    if (camara.status === true) {
-        opcion1 = "Apagar cámara";
-    } else {
-        opcion1 = "Prender cámara";
-    }
-
-    if (microfono === true) {
-        opcion2 = "Apagar micrófono";
-    } else {
-        opcion2 = "Prender micrófono";
-    }
-
-    actualizarHora();
-
-    let decision = prompt(`¿Qué deseas hacer? 
-Opciones:
-0: Agregar participante
-00: Eliminar participante
-1: ${opcion1}
-2: ${opcion2}
-3: Listar participantes
-+: Subir volumen
--: Bajar volumen
-Salir: Irse de la reunión`).toLowerCase();
-
-    switch (decision.toLowerCase()) {
-        case "0":
-            agregar_participante();
-            listar_participantes();
-            break
-
-        case "00":
-            eliminar_participantes();
-            break;
-
-        case "1":
-            toggle_camara();
-            break;
-
-        case "2":
-            toggle_microfono();
-            break;
-
-        case "3":
-            listar_participantes();
-            break;
-
-        case "+":
-            subir_volumen();
-            break;
-
-        case "-":
-            bajar_volumen();
-            break;
-
-        case "salir":
-            salir = true;
-            break;
-
-        default:
-            if (!opcionesPosibles.includes(decision)) {
-                alert(`¡Ups!, no entraste una opción válida.`);
-                continue;
-            }
-            break;
-    }
-} */
