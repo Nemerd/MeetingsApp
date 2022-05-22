@@ -64,7 +64,6 @@ const hora = document.getElementById("hora");
 // Event listeners
 addPart.addEventListener("click", () => modalAgregaParticipantes.show());
 delPart.addEventListener("click", () => modalBorraParticipantes.show());
-// delPart.addEventListener("click", eliminar_participante);
 camara.cam.addEventListener("click", toggle_camara);
 microfono.mic.addEventListener("click", toggle_microfono);
 agregarNombre.addEventListener("click", agregar_participante);
@@ -97,7 +96,6 @@ function randomID() {
     for (let i of participantes) {
         if (random === i.id) {
             console.log(i.id);
-            // return randomID();
         } else {
             return random;
         }
@@ -134,7 +132,6 @@ function listar_participantes() {
 }
 
 function eliminar_participante() {
-    // let eliminar = prompt("Ingresa el ID de quien quieres eliminar")
     const eliminar = parseInt(borrarParticipante.value);
     for (let i = 0; participantes.length > i; i += 1) {
         if (participantes[i].id == eliminar) {
