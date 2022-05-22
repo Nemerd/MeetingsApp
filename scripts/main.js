@@ -23,7 +23,8 @@ participantes que cumplen con esa condicion */
 
 let cal = new Date();
 
-const myModal = new bootstrap.Modal(document.getElementById('modalAgregaParticipantes'));
+const modalAgregaParticipantes = new bootstrap.Modal(document.getElementById('modalAgregaParticipantes'));
+const modalBorraParticipantes = new bootstrap.Modal(document.getElementById('modalBorraParticipantes'));
 let participantes = [];
 const part = document.getElementById("participantes");
 window.setInterval(listar_participantes, 1000);
@@ -51,7 +52,9 @@ class Persona {
 const addPart = document.getElementById("addPart");
 const delPart = document.getElementById("delPart");
 const nuevoParticipante = document.getElementById("nuevoParticipante");
+const borrarParticipante = document.getElementById("borrarParticipante");
 const agregarNombre = document.getElementById("agregarNombre");
+const borrarNombre = document.getElementById("borrarNombre");
 
 
 let volumen = 50;
@@ -59,8 +62,9 @@ let volumen = 50;
 const hora = document.getElementById("hora");
 
 // Event listeners
-addPart.addEventListener("click", () => myModal.show());
-delPart.addEventListener("click", eliminar_participante);
+addPart.addEventListener("click", () => modalAgregaParticipantes.show());
+delPart.addEventListener("click", () => modalBorraParticipantes.show());
+// delPart.addEventListener("click", eliminar_participante);
 camara.cam.addEventListener("click", toggle_camara);
 microfono.mic.addEventListener("click", toggle_microfono);
 agregarNombre.addEventListener("click", agregar_participante);
@@ -68,6 +72,13 @@ nuevoParticipante.addEventListener("input", (e) => {
     console.log(e)
     if (e.inputType === "insertLineBreak") {
         agregar_participante();
+    }
+});
+borrarNombre.addEventListener("click", eliminar_participante);
+borrarParticipante.addEventListener("input", (e) => {
+    console.log(e)
+    if (e.inputType === "insertLineBreak") {
+        eliminar_participante();
     }
 });
 
@@ -100,7 +111,7 @@ function agregar_participante() {
     participantes.push(novato);
     console.log(`Bienvenido/a a la reunión ${novato.nombre} con ID: ${novato.id}`);
     sessionStorage.setItem('participantes', JSON.stringify(participantes));
-    myModal.hide();
+    modalAgregaParticipantes.hide();
     nuevoParticipante.value = "";
 }
 
@@ -123,7 +134,8 @@ function listar_participantes() {
 }
 
 function eliminar_participante() {
-    let eliminar = prompt("Ingresa el ID de quien quieres eliminar")
+    // let eliminar = prompt("Ingresa el ID de quien quieres eliminar")
+    const eliminar = parseInt(borrarParticipante.value);
     for (let i = 0; participantes.length > i; i += 1) {
         if (participantes[i].id == eliminar) {
             console.log(`Adios ${participantes[i].nombre}`);
@@ -131,6 +143,8 @@ function eliminar_participante() {
             sessionStorage.setItem('participantes', JSON.stringify(participantes));
         }
     }
+    modalBorraParticipantes.hide();
+    borrarParticipante.value = "";
 }
 
 // Cámara
