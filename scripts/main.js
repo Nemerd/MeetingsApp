@@ -27,7 +27,6 @@ const modalAgregaParticipantes = new bootstrap.Modal(document.getElementById('mo
 const modalBorraParticipantes = new bootstrap.Modal(document.getElementById('modalBorraParticipantes'));
 let participantes = [];
 const part = document.getElementById("participantes");
-window.setInterval(listar_participantes, 1000);
 
 const camara = {
     status: false,
@@ -114,7 +113,6 @@ function agregar_participante() {
 }
 
 function listar_participantes() {
-
     !sessionStorage.getItem('participantes') ?
         sessionStorage.setItem('participantes', JSON.stringify(participantes)) :
         participantes = JSON.parse(sessionStorage.getItem('participantes'));
@@ -180,3 +178,9 @@ function bajar_volumen() {
     console.log(`El volumen está al ${volumen}`);
     alert(`El volumen está al ${volumen}`);
 }
+
+// Iniciar ejecución de estos componentes
+actualizarHora();
+listar_participantes();
+window.setInterval(actualizarHora, 30000);
+window.setInterval(listar_participantes, 1000);
