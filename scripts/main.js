@@ -56,7 +56,7 @@ const agregarNombre = document.getElementById("agregarNombre");
 const borrarNombre = document.getElementById("borrarNombre");
 
 
-let volumen = 50;
+// let volumen = 50;
 
 const hora = document.getElementById("hora");
 
@@ -106,6 +106,7 @@ function agregar_participante() {
     const nombre = nuevoParticipante.value;
     let novato = new Persona(nombre, randomID());
     participantes.push(novato);
+    Swal.fire(`Bienvenido/a ${novato.nombre}`);
     console.log(`Bienvenido/a a la reunión ${novato.nombre} con ID: ${novato.id}`);
     sessionStorage.setItem('participantes', JSON.stringify(participantes));
     modalAgregaParticipantes.hide();
@@ -134,6 +135,7 @@ function eliminar_participante() {
     for (let i = 0; participantes.length > i; i += 1) {
         if (participantes[i].id == eliminar) {
             console.log(`Adios ${participantes[i].nombre}`);
+            Swal.fire(`Adios ${participantes[i].nombre}`)
             participantes.splice(i, 1);
             sessionStorage.setItem('participantes', JSON.stringify(participantes));
         }
@@ -159,7 +161,7 @@ function toggle_microfono() {
 }
 
 // Volumen
-function subir_volumen() {
+/* function subir_volumen() {
     volumen = volumen + 10;
     if (volumen >= 100) {
         console.log("Volumen máximo");
@@ -167,9 +169,9 @@ function subir_volumen() {
     }
     console.log(`El volumen está al ${volumen}`);
     alert(`El volumen está al ${volumen}`);
-}
+} */
 
-function bajar_volumen() {
+/* function bajar_volumen() {
     volumen = volumen - 10;
     if (volumen <= 0) {
         console.log("Volumen apagado");
@@ -177,7 +179,7 @@ function bajar_volumen() {
     }
     console.log(`El volumen está al ${volumen}`);
     alert(`El volumen está al ${volumen}`);
-}
+} */
 
 // Iniciar ejecución de estos componentes
 actualizarHora();
