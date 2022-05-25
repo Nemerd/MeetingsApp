@@ -19,10 +19,12 @@ body {
     background-color: #3AA296;
 }
 
-.contenido{
+#contenido{
     grid-area: contenido;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    overflow: auto;
     background-color: #3A93A7;
 }
 
@@ -41,12 +43,20 @@ body {
     margin: 20px 20px;
 }
 
+.imagen {
+    width: fit-content;
+}
+
+.control-icon{
+    display: none;
+}
+
 .lista{
     grid-area: lista;
     background-color: #3A75AC;
 }
 
-.participantes{
+#participantes{
     list-style-type: none;
     padding: 0px 10px;
     margin: 0%;
@@ -100,7 +110,7 @@ button {
     align-items: center;
 }
 
-.icon {
+.escondido {
     display: none;
 }
 
