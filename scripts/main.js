@@ -42,9 +42,10 @@ const microfono = {
 }
 
 class Persona {
-    constructor(nombre, id) {
+    constructor(nombre, id, imagen) {
         this.nombre = nombre;
         this.id = id;
+        this.imagen = imagen;
     }
 }
 
@@ -104,7 +105,7 @@ function randomID() {
 // Participantes
 function agregar_participante() {
     const nombre = nuevoParticipante.value;
-    let novato = new Persona(nombre, randomID());
+    let novato = new Persona(nombre, randomID(), Math.floor(Math.random() * 10));
     participantes.push(novato);
     Swal.fire(`Bienvenido/a ${novato.nombre}`);
     console.log(`Bienvenido/a a la reunión ${novato.nombre} con ID: ${novato.id}`);
