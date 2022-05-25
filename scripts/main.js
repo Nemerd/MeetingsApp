@@ -68,14 +68,14 @@ microfono.mic.addEventListener("click", toggle_microfono);
 agregarNombre.addEventListener("click", agregar_participante);
 nuevoParticipante.addEventListener("input", (e) => {
     console.log(e)
-    if (e.inputType === "insertLineBreak") {
+    if (e.inputType === "insertLineBreak" || e.data === null) {
         agregar_participante();
     }
 });
 borrarNombre.addEventListener("click", eliminar_participante);
 borrarParticipante.addEventListener("input", (e) => {
     console.log(e)
-    if (e.inputType === "insertLineBreak") {
+    if (e.inputType === "insertLineBreak" || e.data === null) {
         eliminar_participante();
     }
 });
@@ -86,7 +86,7 @@ function actualizarHora() {
 }
 
 function randomID() {
-    let random = Math.floor(Math.random() * 101);
+    let random = Math.floor(Math.random() * 10);
 
     if (participantes.length === 0) {
         return random;
@@ -124,11 +124,16 @@ function listar_participantes() {
 
 
     for (let i of participantes) {
+        const { nombre, id } = i
         let name = document.createElement('li');
-        name.textContent = `${i.nombre} (${i.id})`;
+        name.textContent = `${nombre} (${id})`;
         part.appendChild(name);
     }
 }
+
+function mostrar_imagenes_participantes() {
+
+};
 
 function eliminar_participante() {
     const eliminar = parseInt(borrarParticipante.value);
@@ -160,29 +165,7 @@ function toggle_microfono() {
     micOff.classList.toggle('visible', !microfono.status);
 }
 
-// Volumen
-/* function subir_volumen() {
-    volumen = volumen + 10;
-    if (volumen >= 100) {
-        console.log("Volumen máximo");
-        volumen = 100;
-    }
-    console.log(`El volumen está al ${volumen}`);
-    alert(`El volumen está al ${volumen}`);
-} */
-
-/* function bajar_volumen() {
-    volumen = volumen - 10;
-    if (volumen <= 0) {
-        console.log("Volumen apagado");
-        volumen = 0;
-    }
-    console.log(`El volumen está al ${volumen}`);
-    alert(`El volumen está al ${volumen}`);
-} */
-
-// Iniciar ejecución de estos componentes
-actualizarHora();
-listar_participantes();
-window.setInterval(actualizarHora, 30000);
-window.setInterval(listar_participantes, 1000);
+actualizarHora()
+listar_participantes()
+window.setInterval(actualizarHora, 1000)
+window.setInterval(listar_participantes, 1000)
