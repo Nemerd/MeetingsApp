@@ -44,7 +44,7 @@ body {
 }
 
 .imagen {
-    width: fit-content;
+    width: auto;
 }
 
 .control-icon{
