@@ -31,11 +31,11 @@ const microfono = {
 }
 
 class Persona {
-    constructor(nombre, id, imagen, isAdmin) {
+    constructor(nombre, id, imagen) {
         this.nombre = nombre;
         this.id = id;
         this.imagen = imagen;
-        this.isAdmin = isAdmin;
+        this.isAdmin = false;
     }
 }
 
@@ -95,7 +95,6 @@ function randomID() {
 
 // Participantes
 function agregar_participante(nombre) {
-    // console.log(isAdmin(nombre));
     let novato = new Persona(nombre, randomID(), Math.floor(Math.random() * 10, false));
     participantes.push(novato);
     Swal.fire(`Bienvenido/a ${novato.nombre}`);
@@ -105,8 +104,8 @@ function agregar_participante(nombre) {
 
 function listar_participantes() {
     !sessionStorage.getItem('participantes') ?
-        sessionStorage.setItem('participantes', JSON.stringify(participantes)) :
-        participantes = JSON.parse(sessionStorage.getItem('participantes'));
+    sessionStorage.setItem('participantes', JSON.stringify([])) :
+    participantes = JSON.parse(sessionStorage.getItem('participantes'));
 
     while (part.firstChild) {
         part.removeChild(part.firstChild);
@@ -169,6 +168,7 @@ function darPrivilegios() {
             if (j.nombre === i.nombre){
                 i.isAdmin = true;
                 console.log(`Privilegio otorgado a ${i.nombre}`);
+                sessionStorage.setItem('participantes', JSON.stringify(participantes))
             }
         })
     })
@@ -192,7 +192,6 @@ actualizarHora()
 listar_participantes()
 mostrar_imagenes_participantes()
 tomarAdmins()
-darPrivilegios()
 
 window.setInterval(darPrivilegios, 2000)
 window.setInterval(mostrar_imagenes_participantes, 2000)
