@@ -1,35 +1,21 @@
 /* Meetings app */
 
-// Funciones que debería tener:
-// [Rehecho][Listo] Agregar participante
-// [Rehecho][Listo] Prender/Apagar cámara
-// [Rehecho][Listo] Prender/Apagar micrófono
-// [][Listo] Subir/Bajar volumen
-// [Rehecho][Listo] Agregar participantes
-// [Rehecho][Listo] Listar participantes
-//       |-> [Listo] Ordenar la lista.
-//       |-> [] Busqueda de participantes
-/* ahi podrias agregar una opcion que diga buscar participante, 
-luego un prompt que pregunte alguna palabra para buscar, luego 
-podrias realizar un filtro de tu arreglo y listar a los 
-participantes que cumplen con esa condicion */
-// [][Listo] 00: Eliminar participante
-//       |-> [Listo] Mostrar index de participante para poder eliminarlo
-// [] Compartir imágenes
-// [Listo] Mostrar la hora
-// [] Mostrar imagen de participante cuando la cámara esté encendida
-
-
-
 let cal = new Date();
 
 const modalAgregaParticipantes = new bootstrap.Modal(document.getElementById('modalAgregaParticipantes'));
 const modalBorraParticipantes = new bootstrap.Modal(document.getElementById('modalBorraParticipantes'));
 let participantes = [];
+let adminRegistrado = [];
 const part = document.getElementById("participantes");
-
 const contenido = document.getElementById("contenido");
-// const contenedorVideo = document.getElementById("contenedorVideo");
+const addPart = document.getElementById("addPart");
+const delPart = document.getElementById("delPart");
+const salirReunion = document.getElementById("salirReunion");
+const nuevoParticipante = document.getElementById("nuevoParticipante");
+const borrarParticipante = document.getElementById("borrarParticipante");
+const formularioAgregar = document.getElementById("formularioAgregar");
+const formularioBorrar = document.getElementById("formularioBorrar");
+const hora = document.getElementById("hora");
 
 const camara = {
     status: false,
@@ -45,53 +31,47 @@ const microfono = {
 }
 
 class Persona {
-    constructor(nombre, id, imagen) {
+    constructor(nombre, id, imagen, isAdmin) {
         this.nombre = nombre;
         this.id = id;
         this.imagen = imagen;
+        this.isAdmin = isAdmin;
     }
 }
-
-
-const addPart = document.getElementById("addPart");
-const delPart = document.getElementById("delPart");
-const nuevoParticipante = document.getElementById("nuevoParticipante");
-const borrarParticipante = document.getElementById("borrarParticipante");
-const agregarNombre = document.getElementById("agregarNombre");
-const borrarNombre = document.getElementById("borrarNombre");
-
-
-// let volumen = 50;
-
-const hora = document.getElementById("hora");
 
 // Event listeners
 addPart.addEventListener("click", () => participantes.length >= 10 ? Swal.fire({ icon: 'error', title: 'No se admiten más participantes' }) : modalAgregaParticipantes.show());
 delPart.addEventListener("click", () => modalBorraParticipantes.show());
+salirReunion.addEventListener("click", () => sessionStorage.setItem('participantes', JSON.stringify([])));
 camara.cam.addEventListener("click", toggle_camara);
 microfono.mic.addEventListener("click", toggle_microfono);
-agregarNombre.addEventListener("click", agregar_participante);
-nuevoParticipante.addEventListener("input", (e) => {
-    if (e.inputType === "insertLineBreak" || e.data === null) {
-        agregar_participante();
-    }
+formularioAgregar.addEventListener("submit", (evt) => {
+    evt.preventDefault();
+    agregar_participante(evt.target[0].value);
+    nuevoParticipante.value = ""
 });
-borrarNombre.addEventListener("click", eliminar_participante);
-borrarParticipante.addEventListener("input", (e) => {
-    if (e.inputType === "insertLineBreak" || e.data === null) {
-        eliminar_participante();
-    }
+formularioBorrar.addEventListener("submit", (evt) => {
+    // console.log(evt.target[0].value)
+    evt.preventDefault();
+    eliminar_participante(evt.target[0].value);
+    borrarParticipante.value = ""
 });
-
 
 function actualizarHora() {
     hora.textContent = `${cal.getHours()}:${cal.getMinutes()}`;
 }
 
+function tomarAdmins() {
+    fetch("../admins/admins.json")
+        .then((res) => res.json())
+        .then((prom) => {
+            prom.forEach((x) => adminRegistrado.push(x));
+        })
+
+}
+
 function isIDRepetido(nuevoID) {
     for (let i of participantes) {
-        console.log(`Generado: ${nuevoID}`)
-        console.log(`Chequeando ${i.id}`)
         if (i.id === nuevoID) {
             return true;
         } else {
@@ -114,15 +94,13 @@ function randomID() {
 }
 
 // Participantes
-function agregar_participante() {
-    const nombre = nuevoParticipante.value;
-    let novato = new Persona(nombre, randomID(), Math.floor(Math.random() * 10));
+function agregar_participante(nombre) {
+    // console.log(isAdmin(nombre));
+    let novato = new Persona(nombre, randomID(), Math.floor(Math.random() * 10, false));
     participantes.push(novato);
     Swal.fire(`Bienvenido/a ${novato.nombre}`);
-    console.log(`Bienvenido/a a la reunión ${novato.nombre} con ID: ${novato.id}`);
     sessionStorage.setItem('participantes', JSON.stringify(participantes));
     modalAgregaParticipantes.hide();
-    nuevoParticipante.value = "";
 }
 
 function listar_participantes() {
@@ -133,7 +111,6 @@ function listar_participantes() {
     while (part.firstChild) {
         part.removeChild(part.firstChild);
     }
-
 
     for (let i of participantes) {
         const { nombre, id } = i
@@ -172,10 +149,10 @@ function mostrar_imagenes_participantes() {
 
 };
 
-function eliminar_participante() {
-    const eliminar = parseInt(borrarParticipante.value);
+function eliminar_participante(eliminar) {
+    const eliminalo = parseInt(eliminar);
     for (let i = 0; participantes.length > i; i += 1) {
-        if (participantes[i].id == eliminar) {
+        if (participantes[i].id == eliminalo) {
             console.log(`Adios ${participantes[i].nombre}`);
             Swal.fire(`Adios ${participantes[i].nombre}`)
             participantes.splice(i, 1);
@@ -183,15 +160,23 @@ function eliminar_participante() {
         }
     }
     modalBorraParticipantes.hide();
-    borrarParticipante.value = "";
+}
+
+function darPrivilegios() {
+    console.log("Buscando privilegios")
+    participantes.forEach((i) => {
+        adminRegistrado.forEach((j) => {
+            if (j.nombre === i.nombre){
+                i.isAdmin = true;
+                console.log(`Privilegio otorgado a ${i.nombre}`);
+            }
+        })
+    })
 }
 
 // Cámara
 function toggle_camara() {
     camara.status = !camara.status;
-    // console.log(`Cámara prendida: ${camara.status}`);
-
-
     camara.camOn.classList.toggle('visible', camara.status);
     camara.camOff.classList.toggle('visible', !camara.status);
 }
@@ -199,15 +184,17 @@ function toggle_camara() {
 // Micrófono
 function toggle_microfono() {
     microfono.status = !microfono.status;
-    console.log(`Micrófono prendido: ${microfono.status}`);
     micOn.classList.toggle('visible', microfono.status);
     micOff.classList.toggle('visible', !microfono.status);
 }
 
 actualizarHora()
-// modalAgregaParticipantes.show()
 listar_participantes()
 mostrar_imagenes_participantes()
-window.setInterval(mostrar_imagenes_participantes, 20000)
+tomarAdmins()
+darPrivilegios()
+
+window.setInterval(darPrivilegios, 2000)
+window.setInterval(mostrar_imagenes_participantes, 2000)
 window.setInterval(actualizarHora, 1000)
 window.setInterval(listar_participantes, 1000)

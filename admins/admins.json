@@ -1,0 +1,27 @@
+[
+    {
+        "nombre": "Sandokan",
+        "isAdmin": true,
+        "genero": "M"
+    },
+    {
+        "nombre": "Marian",
+        "isAdmin": true,
+        "genero": "F"
+    },
+    {
+        "nombre": "Clark Kent",
+        "isAdmin": true,
+        "genero": "M"
+    },
+    {
+        "nombre": "Louis Lane",
+        "isAdmin": true,
+        "genero": "F"
+    },
+    {
+        "nombre": "Bruce Wayne",
+        "isAdmin": true,
+        "genero": "M"
+    }
+]

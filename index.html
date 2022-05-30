@@ -25,12 +25,13 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <textarea id="nuevoParticipante" rows="1" placeholder="Nombre del participante"
-                        autocapitalize="words"></textarea>
+                    <form action="" id="formularioAgregar">
+                        <input id="nuevoParticipante" type="text" placeholder="Nombre del participante">
+                        <button type="submit" id="agregarNombre" class="btn btn-primary">Agregar</button>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" id="agregarNombre" class="btn btn-primary">Agregar</button>
                 </div>
             </div>
         </div>
@@ -44,20 +45,21 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <textarea id="borrarParticipante" rows="1" placeholder="ID del participante"
-                        autocapitalize="words"></textarea>
+                    <form action="" id="formularioBorrar">
+                        <input id="borrarParticipante" type="text" placeholder="ID del participante">
+                        <button type="submit" id="borrarNombre" class="btn btn-primary">Eliminar</button>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" id="borrarNombre" class="btn btn-warning">Eliminar</button>
                 </div>
             </div>
         </div>
     </div>
     <div class="barra">
-        <div class="esqIzq">
+        <!-- <div class="esqIzq">
             <p id="nombrePart">Nombre del participante</p>
-        </div>
+        </div> -->
         <div class="esqDer" id="hora">
             <p>Hora</p>
         </div>
@@ -66,7 +68,6 @@
     </div>
     <div class="lista">
         <button id="addPart">Agregar participante</button>
-
         <button id="delPart">Eliminar participante</button>
         <ul id="participantes">
             <li>Participantes</li>
@@ -133,16 +134,7 @@
                 Compartir imágenes</button>
         </div>
         <div class="ctrlDer">
-            <button>
-                <svg xmlns="http://www.w3.org/2000/svg" class="siempreVisible icon icon-tabler icon-tabler-dots"
-                    width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <circle cx="5" cy="12" r="1" />
-                    <circle cx="12" cy="12" r="1" />
-                    <circle cx="19" cy="12" r="1" />
-                </svg>
-                Más opciones</button>
+            <button id="salirReunion">Salir de la reunión</button>
         </div>
     </div>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
