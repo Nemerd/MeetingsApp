@@ -8,6 +8,7 @@ let participantes = [];
 let adminRegistrado = [];
 const part = document.getElementById("participantes");
 const contenido = document.getElementById("contenido");
+const nombrePart = document.getElementById("nombrePart");
 const addPart = document.getElementById("addPart");
 const delPart = document.getElementById("delPart");
 const salirReunion = document.getElementById("salirReunion");
@@ -112,10 +113,17 @@ function listar_participantes() {
     }
 
     for (let i of participantes) {
-        const { nombre, id } = i
+        const { nombre, id, isAdmin} = i
         let name = document.createElement('li');
-        name.textContent = `${nombre} (${id})`;
+        let privilegios = "";
+        if (isAdmin) {
+            privilegios = " (Admin)"
+        }
+        name.textContent = `${nombre} (${id})${privilegios}`;
         part.appendChild(name);
+    }
+    if (participantes[0]) {
+        nombrePart.textContent = participantes[0].nombre
     }
 }
 
