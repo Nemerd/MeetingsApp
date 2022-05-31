@@ -6,9 +6,11 @@ const modalAgregaParticipantes = new bootstrap.Modal(document.getElementById('mo
 const modalBorraParticipantes = new bootstrap.Modal(document.getElementById('modalBorraParticipantes'));
 let participantes = [];
 let adminRegistrado = [];
+let urlDeImgACompartir;
 const part = document.getElementById("participantes");
 const contenido = document.getElementById("contenido");
 const nombrePart = document.getElementById("nombrePart");
+const compartirImg = document.getElementById("compartirImg");
 const addPart = document.getElementById("addPart");
 const delPart = document.getElementById("delPart");
 const salirReunion = document.getElementById("salirReunion");
@@ -18,6 +20,12 @@ const formularioAgregar = document.getElementById("formularioAgregar");
 const formularioBorrar = document.getElementById("formularioBorrar");
 const hora = document.getElementById("hora");
 
+const compartir = {
+    status: false,
+    sharOn: document.getElementById('sharOn'),
+    sharOff: document.getElementById('sharOff'),
+    compartirImg: document.getElementById('compartirImg'),
+}
 const camara = {
     status: false,
     camOn: document.getElementById('camOn'),
@@ -46,17 +54,19 @@ delPart.addEventListener("click", () => modalBorraParticipantes.show());
 salirReunion.addEventListener("click", () => sessionStorage.setItem('participantes', JSON.stringify([])));
 camara.cam.addEventListener("click", toggle_camara);
 microfono.mic.addEventListener("click", toggle_microfono);
-formularioAgregar.addEventListener("submit", (evt) => {
+formularioAgregar.addEventListener("submit", evt => {
     evt.preventDefault();
     agregar_participante(evt.target[0].value);
     nuevoParticipante.value = ""
 });
-formularioBorrar.addEventListener("submit", (evt) => {
+formularioBorrar.addEventListener("submit", evt => {
     // console.log(evt.target[0].value)
     evt.preventDefault();
     eliminar_participante(evt.target[0].value);
     borrarParticipante.value = ""
 });
+// compartirImg.addEventListener("click", toggle_share);
+compartirImg.addEventListener("click", toggleContenido);
 
 function actualizarHora() {
     hora.textContent = `${cal.getHours()}:${cal.getMinutes()}`;
@@ -101,17 +111,28 @@ function agregar_participante(nombre) {
     Swal.fire(`Bienvenido/a ${novato.nombre}`);
     sessionStorage.setItem('participantes', JSON.stringify(participantes));
     modalAgregaParticipantes.hide();
+    mostrar_imagenes_participantes();
 }
 
-function listar_participantes() {
-    !sessionStorage.getItem('participantes') ?
-    sessionStorage.setItem('participantes', JSON.stringify([])) :
-    participantes = JSON.parse(sessionStorage.getItem('participantes'));
-
+function borrarContenidoLista() {
     while (part.firstChild) {
         part.removeChild(part.firstChild);
     }
+}
 
+function crearLocalStorage(param){
+    !sessionStorage.getItem(param) ?
+    sessionStorage.setItem(param, JSON.stringify([])) :
+    participantes = JSON.parse(sessionStorage.getItem(param));
+}
+
+function listar_participantes() {
+    crearLocalStorage('participantes');
+
+    // Borrar todo el contenido mostrado
+    borrarContenidoLista()
+
+    // Mostrar los participantes
     for (let i of participantes) {
         const { nombre, id, isAdmin} = i
         let name = document.createElement('li');
@@ -130,9 +151,9 @@ function listar_participantes() {
 function mostrar_imagenes_participantes() {
     contenido.innerHTML = ""
     participantes.forEach(
-        (x) => {
+        x => {
             let contenedorVideo = document.createElement("div");
-            contenedorVideo.classList.add('contenedorVideo')
+            contenedorVideo.classList.add('contenedorVideo');
 
             const iconoAusente = `<svg xmlns="http://www.w3.org/2000/svg"
             class="videoDeParticipantes icon icon-tabler icon-tabler-user escondido" width="44" height="44"
@@ -171,8 +192,8 @@ function eliminar_participante(eliminar) {
 
 function darPrivilegios() {
     console.log("Buscando privilegios")
-    participantes.forEach((i) => {
-        adminRegistrado.forEach((j) => {
+    participantes.forEach(i => {
+        adminRegistrado.forEach(j => {
             if (j.nombre === i.nombre){
                 i.isAdmin = true;
                 console.log(`Privilegio otorgado a ${i.nombre}`);
@@ -196,12 +217,48 @@ function toggle_microfono() {
     micOff.classList.toggle('visible', !microfono.status);
 }
 
+function toggle_share() {
+    compartir.status = !compartir.status;
+    sharOn.classList.toggle('visible', compartir.status);
+    sharOff.classList.toggle('visible', !compartir.status);
+    mostrarImagenCompartida()
+    toggleContenido()
+}
+
+function toggleContenido() {
+    let a = document.querySelectorAll(".contenedorVideo")
+    a.forEach(x => {
+        console.log( x.classList )
+        x.classList.toggle("escondido")
+        console.log( x.classList )
+    });
+}
+
+function mostrarImagenCompartida() {
+    fetch("https://jsonplaceholder.typicode.com/photos")
+        .then(res => res.json())
+        .then(res => {
+            urlDeImgACompartir = res[(Math.floor(Math.random() * res.length))].url;
+        })
+    console.log(urlDeImgACompartir);
+    borrarContenido();
+
+    const img = document.createElement('img');
+    img.src = urlDeImgACompartir;
+    img.classList.add("imgCompartida");
+    contenido.appendChild(img);
+}
+
+function crearContenedorImg() {
+    borrarContenido()
+}
+
 actualizarHora()
 listar_participantes()
 mostrar_imagenes_participantes()
 tomarAdmins()
 
 window.setInterval(darPrivilegios, 2000)
-window.setInterval(mostrar_imagenes_participantes, 2000)
+// window.setInterval(mostrar_imagenes_participantes, 2000)
 window.setInterval(actualizarHora, 1000)
 window.setInterval(listar_participantes, 1000)

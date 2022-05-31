@@ -28,6 +28,16 @@ body {
     background-color: #3A93A7;
 }
 
+.icon {
+    display: none;
+}
+
+.imgCompartida{
+    display: flex;
+    height: auto;
+    width: auto;
+}
+
 .videoDeParticipantes{
     align-self: center;
 }
@@ -37,7 +47,7 @@ body {
     border-radius: 5px;
     width: 250px;
     height: 150px;
-    display:flex;
+    display: flex;
     align-content: center;
     justify-content: center;
     margin: 20px 20px;
@@ -121,22 +131,3 @@ button {
 .siempreVisible {
     display: flex;
 }
-
-/* @keyframes changeColors {
-
-    0%{
-        color: red;
-    }
-    
-    30%{
-        color: blue;
-    }
-
-    60%{
-        color: green;
-    }
-
-    100%{
-        color: red;
-    }
-} */
