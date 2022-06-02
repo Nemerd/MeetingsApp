@@ -258,6 +258,11 @@ function toggleContenido() {
         x.classList.toggle("escondido")
         console.log( x.classList )
     });
+    if (!document.querySelector('#imagenCompartida')) {
+        mostrarImagenCompartida();
+    } else {
+        document.getElementById('imagenCompartida').remove()
+    }
 }
 
 function mostrarImagenCompartida() {
@@ -265,19 +270,20 @@ function mostrarImagenCompartida() {
         .then(res => res.json())
         .then(res => {
             urlDeImgACompartir = res[(Math.floor(Math.random() * res.length))].url;
+            
+            const img = document.createElement('img');
+            img.src = urlDeImgACompartir;
+            img.id = 'imagenCompartida'
+            img.classList.add("imgCompartida");
+            contenido.appendChild(img);
         })
     console.log(urlDeImgACompartir);
-    borrarContenido();
 
-    const img = document.createElement('img');
-    img.src = urlDeImgACompartir;
-    img.classList.add("imgCompartida");
-    contenido.appendChild(img);
 }
 
-function crearContenedorImg() {
-    borrarContenido()
-}
+// function crearContenedorImg() {
+    // 
+// }
 
 actualizarHora()
 listar_participantes()
@@ -285,7 +291,7 @@ mostrar_imagenes_participantes()
 tomarAdmins()
 
 window.setInterval(darPrivilegios, 2000)
-window.setInterval(mostrar_imagenes_participantes, 2000)
+// window.setInterval(mostrar_imagenes_participantes, 2000)
 window.setInterval(actualizarHora, 1000)
 // window.setInterval(listar_participantes, 1000)
 
