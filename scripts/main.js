@@ -51,7 +51,10 @@ class Persona {
 // Event listeners
 addPart.addEventListener("click", () => participantes.length >= 10 ? Swal.fire({ icon: 'error', title: 'No se admiten más participantes' }) : modalAgregaParticipantes.show());
 delPart.addEventListener("click", () => modalBorraParticipantes.show());
-salirReunion.addEventListener("click", () => sessionStorage.setItem('participantes', JSON.stringify([])));
+salirReunion.addEventListener("click", () => {
+    sessionStorage.setItem('participantes', JSON.stringify([]))
+    listar_participantes();
+});
 camara.cam.addEventListener("click", toggle_camara);
 microfono.mic.addEventListener("click", toggle_microfono);
 formularioAgregar.addEventListener("submit", evt => {
@@ -65,7 +68,6 @@ formularioBorrar.addEventListener("submit", evt => {
     eliminar_participante(evt.target[0].value);
     borrarParticipante.value = ""
 });
-// compartirImg.addEventListener("click", toggle_share);
 compartirImg.addEventListener("click", toggleContenido);
 
 function actualizarHora() {
@@ -112,6 +114,7 @@ function agregar_participante(nombre) {
     sessionStorage.setItem('participantes', JSON.stringify(participantes));
     modalAgregaParticipantes.hide();
     mostrar_imagenes_participantes();
+    listar_participantes();
 }
 
 function borrarContenidoLista() {
@@ -136,12 +139,34 @@ function listar_participantes() {
     for (let i of participantes) {
         const { nombre, id, isAdmin} = i
         let name = document.createElement('li');
+        name.id = `participante-${id}`
         let privilegios = "";
         if (isAdmin) {
             privilegios = " (Admin)"
         }
         name.textContent = `${nombre} (${id})${privilegios}`;
         part.appendChild(name);
+        
+        const menu = new Contextify([
+            {
+                icon: 'none',
+                type: 'button',
+                text: 'Eliminar',
+                click: () => eliminar_participante(id)
+            },
+            {
+                icon: 'none',
+                type: 'button',
+                text: 'Listar participantes',
+                click: listar_participantes
+            },
+            {
+                icon: 'none',
+                type: 'button',
+                text: 'Cancelar',
+                click: function () { menu.hide(false); }
+            }
+        ], 'dark', name)
     }
     if (participantes[0]) {
         nombrePart.textContent = participantes[0].nombre
@@ -188,6 +213,7 @@ function eliminar_participante(eliminar) {
         }
     }
     modalBorraParticipantes.hide();
+    listar_participantes();
 }
 
 function darPrivilegios() {
@@ -259,6 +285,10 @@ mostrar_imagenes_participantes()
 tomarAdmins()
 
 window.setInterval(darPrivilegios, 2000)
-// window.setInterval(mostrar_imagenes_participantes, 2000)
+window.setInterval(mostrar_imagenes_participantes, 2000)
 window.setInterval(actualizarHora, 1000)
-window.setInterval(listar_participantes, 1000)
+// window.setInterval(listar_participantes, 1000)
+
+
+
+
