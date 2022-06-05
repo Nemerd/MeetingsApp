@@ -209,7 +209,6 @@ function eliminar_participante(eliminar) {
 }
 
 function darPrivilegios() {
-    console.log("Buscando privilegios")
     participantes.forEach(i => {
         adminRegistrado.forEach(j => {
             if (j.nombre === i.nombre){
@@ -273,20 +272,10 @@ function mostrarImagenCompartida() {
 
 }
 
-// function crearContenedorImg() {
-    // 
-// }
-
 actualizarHora()
 listar_participantes()
 mostrar_imagenes_participantes()
 tomarAdmins()
 
 window.setInterval(darPrivilegios, 2000)
-// window.setInterval(mostrar_imagenes_participantes, 2000)
 window.setInterval(actualizarHora, 1000)
-// window.setInterval(listar_participantes, 1000)
-
-
-
-
