@@ -1,7 +1,6 @@
 /* Meetings app */
 
 let cal = new Date();
-
 const modalAgregaParticipantes = new bootstrap.Modal(document.getElementById('modalAgregaParticipantes'));
 const modalBorraParticipantes = new bootstrap.Modal(document.getElementById('modalBorraParticipantes'));
 let participantes = [];
@@ -12,12 +11,10 @@ const contenido = document.getElementById("contenido");
 const nombrePart = document.getElementById("nombrePart");
 const compartirImg = document.getElementById("compartirImg");
 const addPart = document.getElementById("addPart");
-const delPart = document.getElementById("delPart");
 const salirReunion = document.getElementById("salirReunion");
 const nuevoParticipante = document.getElementById("nuevoParticipante");
 const borrarParticipante = document.getElementById("borrarParticipante");
 const formularioAgregar = document.getElementById("formularioAgregar");
-const formularioBorrar = document.getElementById("formularioBorrar");
 const hora = document.getElementById("hora");
 
 const compartir = {
@@ -50,10 +47,10 @@ class Persona {
 
 // Event listeners
 addPart.addEventListener("click", () => participantes.length >= 10 ? Swal.fire({ icon: 'error', title: 'No se admiten más participantes' }) : modalAgregaParticipantes.show());
-delPart.addEventListener("click", () => modalBorraParticipantes.show());
 salirReunion.addEventListener("click", () => {
     sessionStorage.setItem('participantes', JSON.stringify([]))
     listar_participantes();
+    mostrar_imagenes_participantes();
 });
 camara.cam.addEventListener("click", toggle_camara);
 microfono.mic.addEventListener("click", toggle_microfono);
@@ -61,12 +58,6 @@ formularioAgregar.addEventListener("submit", evt => {
     evt.preventDefault();
     agregar_participante(evt.target[0].value);
     nuevoParticipante.value = ""
-});
-formularioBorrar.addEventListener("submit", evt => {
-    // console.log(evt.target[0].value)
-    evt.preventDefault();
-    eliminar_participante(evt.target[0].value);
-    borrarParticipante.value = ""
 });
 compartirImg.addEventListener("click", toggleContenido);
 
@@ -214,6 +205,7 @@ function eliminar_participante(eliminar) {
     }
     modalBorraParticipantes.hide();
     listar_participantes();
+    mostrar_imagenes_participantes();
 }
 
 function darPrivilegios() {

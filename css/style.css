@@ -26,6 +26,7 @@ body {
     flex-wrap: wrap;
     overflow: auto;
     background-color: #3A93A7;
+    justify-content: center;
 }
 
 .icon {
@@ -34,8 +35,7 @@ body {
 
 .imgCompartida{
     display: flex;
-    height: auto;
-    width: auto;
+    height: 100%;
 }
 
 .videoDeParticipantes{
